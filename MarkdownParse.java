@@ -15,14 +15,19 @@ public class MarkdownParse {
             int openBracket = markdown.indexOf("[", currentIndex);
             int closeBracket = markdown.indexOf("]", openBracket);
             int openParen = markdown.indexOf("(", closeBracket);
-            int closeParen = markdown.indexOf("\n", openParen);
-            if(closeParen == -1){
+            int closeParen = markdown.indexOf("\n", openParen) - 1;
+            if(openBracket < 0 || closeBracket < 0 || openParen < 0 || closeParen < 0){
+                break;
+            }
+            if(closeParen == -2){
                 closeParen = markdown.length() - 1;
             }
             toReturn.add(markdown.substring(openParen + 1, closeParen));
             currentIndex = closeParen + 1;
         }
-
+        if(markdown.indexOf("https://", currentIndex) >= 0 || markdown.indexOf("www.", currentIndex) >= 0){
+            //toReturn.add(markdown.substring())
+        }
         return toReturn;
     }
 
