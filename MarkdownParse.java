@@ -12,14 +12,13 @@ public class MarkdownParse {
         int currentIndex = 0;
         while(currentIndex < markdown.length()) {
             String str = "";
-            int ending = 0;
-            if(markdown.indexOf("(", currentIndex) >= 0){
-                ending = markdown.lastIndexOf(")", currentIndex);
-                currentIndex = markdown.indexOf("(", currentIndex) + 1;
-            }
-            else if(markdown.indexOf("http", currentIndex) >= 0){
+            if(markdown.indexOf("http", currentIndex) >= 0){
                 currentIndex = markdown.indexOf("http", currentIndex);
             }
+            else if(markdown.indexOf("(", currentIndex) >= 0){
+                currentIndex = markdown.indexOf("(", currentIndex) + 1;
+            }
+
             int endline = markdown.indexOf("\n", currentIndex);
             if(endline < 0){
                 endline = markdown.length();
@@ -31,8 +30,10 @@ public class MarkdownParse {
                 }
                 else{
                     if(c == '-' || c == '(' || c == ')' || c == '.' || c == ':' || c == '/' || c == '_'){
-                        if(markdown.charAt(currentIndex - 1) == '(' && i == markdown.lastIndexOf(")")){
-                            continue;
+                        if(currentIndex - 1 >= 0){
+                            if(markdown.charAt(currentIndex - 1) == '(' && i == markdown.lastIndexOf(")", endline)){
+                                continue;
+                            }
                         }
                         str += c;
                     }
