@@ -24,7 +24,7 @@ public class MarkdownParse {
                     System.out.println(str);
                 }
                 else{
-                    if(c == '-' || c == '(' || c == ')' || c == '.'){
+                    if(c == '-' || c == '(' || c == ')' || c == '.' || c == ':' || c == '/'){
                         str += c;
                         System.out.println(str);
                     }
@@ -34,7 +34,7 @@ public class MarkdownParse {
                 }
             }
             toReturn.add(str);
-            currentIndex = endline;
+            currentIndex = endline + 1;
             /*
             int openBracket = markdown.indexOf("[", currentIndex);
             int closeBracket = markdown.indexOf("]", openBracket);
