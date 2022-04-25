@@ -9,10 +9,17 @@ public class MarkdownParse {
 
     public static ArrayList<String> getLinks(String markdown) {
         ArrayList<String> toReturn = new ArrayList<>();
-        // find the next [, then find the ], then find the (, then read link upto next )
         int currentIndex = 0;
         while(currentIndex < markdown.length()) {
             String str = "";
+            int ending = 0;
+            if(markdown.indexOf("(", currentIndex) >= 0){
+                ending = markdown.lastIndexOf(")", currentIndex);
+                currentIndex = markdown.indexOf("(", currentIndex) + 1;
+            }
+            else if(markdown.indexOf("http", currentIndex) >= 0){
+                currentIndex = markdown.indexOf("http", currentIndex);
+            }
             int endline = markdown.indexOf("\n", currentIndex);
             if(endline < 0){
                 endline = markdown.length();
@@ -21,40 +28,24 @@ public class MarkdownParse {
                 Character c = markdown.charAt(i);
                 if(Character.isLetter(c)){
                     str += c;
-                    System.out.println(str);
                 }
                 else{
-                    if(c == '-' || c == '(' || c == ')' || c == '.' || c == ':' || c == '/'){
+                    if(c == '-' || c == '(' || c == ')' || c == '.' || c == ':' || c == '/' || c == '_'){
+                        if(markdown.charAt(currentIndex - 1) == '(' && i == markdown.lastIndexOf(")")){
+                            continue;
+                        }
                         str += c;
-                        System.out.println(str);
                     }
                     else{
                         str = "";
                     }
                 }
             }
-            toReturn.add(str);
+            if(!str.equals("")){
+                toReturn.add(str);
+            }
             currentIndex = endline + 1;
-            /*
-            int openBracket = markdown.indexOf("[", currentIndex);
-            int closeBracket = markdown.indexOf("]", openBracket);
-            int openParen = markdown.indexOf("(", closeBracket);
-            int closeParen = markdown.indexOf("\n", openParen) - 1;
-            if(openBracket < 0 || closeBracket < 0 || openParen < 0 || closeParen < 0){
-                break;
-            }
-            if(closeParen == -2){
-                closeParen = markdown.length() - 1;
-            }
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
-            currentIndex = closeParen + 1;
-            */
         }
-       /*
-        if(markdown.indexOf("https://", currentIndex) >= 0 || markdown.indexOf("www.", currentIndex) >= 0){
-            //toReturn.add(markdown.substring())
-        }
-        */
         return toReturn;
     }
 
