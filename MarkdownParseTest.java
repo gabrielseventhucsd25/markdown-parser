@@ -14,7 +14,7 @@ public class MarkdownParseTest {
     @Test
     public void testBreak1() throws IOException{
         ArrayList<String> a = new ArrayList<>();
-        Path p = Path.of("/Users/hihowareu/Documents/markdown-parser/break-test.md");
+        Path p = Path.of("./break-test.md");
         String content = Files.readString(p);
         a.add("https://en.wikipedia.org/wiki/Diego_(tortoise)");
         assertEquals(a, MarkdownParse.getLinks(content));
